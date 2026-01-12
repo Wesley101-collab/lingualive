@@ -1,0 +1,135 @@
+.container {
+  width: 100%;
+}
+
+.dropzone {
+  border: 2px dashed var(--border-color, #ddd);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-secondary, #f8f9fa);
+}
+
+.dropzone:hover,
+.dropzone.dragging {
+  border-color: var(--primary-color, #4f46e5);
+  background: var(--bg-hover, #f0f0ff);
+}
+
+.dropzone.hasFile {
+  cursor: default;
+  border-style: solid;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-primary, #333);
+}
+
+.subtext {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #666);
+  margin: 0.25rem 0;
+}
+
+.formats {
+  font-size: 0.8rem;
+  color: var(--text-muted, #999);
+  margin-top: 0.5rem;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fileIcon {
+  font-size: 1.5rem;
+}
+
+.fileName {
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.fileSize {
+  color: var(--text-secondary, #666);
+  font-size: 0.9rem;
+}
+
+.clearBtn {
+  background: var(--danger-color, #ef4444);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.error {
+  color: var(--danger-color, #ef4444);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.progressBar {
+  height: 6px;
+  background: var(--bg-secondary, #e5e7eb);
+  border-radius: 3px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--primary-color, #4f46e5);
+  transition: width 0.3s ease;
+}
+
+.processBtn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  background: var(--primary-color, #4f46e5);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.processBtn:hover {
+  background: var(--primary-hover, #4338ca);
+}
+
+@media (max-width: 480px) {
+  .dropzone {
+    padding: 1.5rem 1rem;
+  }
+  
+  .icon {
+    font-size: 2rem;
+  }
+}

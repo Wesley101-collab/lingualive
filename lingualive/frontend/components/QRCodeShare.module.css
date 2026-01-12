@@ -1,0 +1,197 @@
+.container {
+  position: relative;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.shareButton:hover {
+  background: var(--primary-hover);
+}
+
+.shareButton span {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  .shareButton span {
+    display: inline;
+  }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: var(--background);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  color: var(--text);
+}
+
+.title {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.qrWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.qrCode {
+  border-radius: 8px;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.instruction {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.linkWrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.linkInput {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.copyButton {
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.copyButton:hover {
+  background: var(--primary-hover);
+}
+
+.roomCode {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.roomCode span {
+  color: var(--text-secondary);
+  margin-right: 0.5rem;
+}
+
+.roomCode strong {
+  font-family: monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+}
+
+:global(body.high-contrast) .modalContent {
+  background: #000;
+  border: 3px solid #fff;
+}
+
+:global(body.high-contrast) .qrCode {
+  border-color: #fff;
+}
+
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 1.5rem;
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .qrWrapper img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .linkWrapper {
+    flex-direction: column;
+  }
+
+  .linkInput {
+    font-size: 0.75rem;
+  }
+
+  .copyButton {
+    width: 100%;
+  }
+}

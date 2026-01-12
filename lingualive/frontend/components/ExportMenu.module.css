@@ -1,0 +1,107 @@
+.container {
+  position: relative;
+}
+
+.exportButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exportButton:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary);
+}
+
+.exportButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 160px;
+  z-index: 100;
+  animation: dropIn 0.15s ease;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.dropdownItem:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.dropdownItem:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.dropdownItem:hover {
+  background: var(--surface);
+}
+
+.dropdownItem svg {
+  color: var(--text-secondary);
+}
+
+:global(body.high-contrast) .dropdown {
+  background: #000;
+  border-color: #fff;
+}
+
+:global(body.high-contrast) .dropdownItem:hover {
+  background: #333;
+}
+
+
+@media (max-width: 480px) {
+  .exportButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .exportButton span {
+    display: none;
+  }
+
+  .dropdown {
+    min-width: 140px;
+    right: 0;
+  }
+
+  .dropdownItem {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}

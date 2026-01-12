@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.label {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-small);
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.select {
+  width: 100%;
+  max-width: 300px;
+}
+
+@media (min-width: 600px) {
+  .container {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+}
