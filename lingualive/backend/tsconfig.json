@@ -7,9 +7,10 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "..",
     "resolveJsonModule": true,
     "declaration": true,
+    "baseUrl": ".",
     "paths": {
       "@shared/*": ["../shared/*"]
     }

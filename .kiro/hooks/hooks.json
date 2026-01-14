@@ -1,0 +1,27 @@
+{
+  "hooks": [
+    {
+      "name": "Format on Save",
+      "description": "Run Prettier on TypeScript files when saved",
+      "event": "onFileSave",
+      "filePattern": "**/*.{ts,tsx}",
+      "command": "npx prettier --write",
+      "enabled": false
+    },
+    {
+      "name": "Type Check",
+      "description": "Run TypeScript type checking after changes",
+      "event": "onFileSave", 
+      "filePattern": "lingualive/**/*.{ts,tsx}",
+      "command": "npx tsc --noEmit",
+      "enabled": false
+    },
+    {
+      "name": "Git Status",
+      "description": "Show git status on session start",
+      "event": "onSessionStart",
+      "command": "git status --short",
+      "enabled": true
+    }
+  ]
+}
