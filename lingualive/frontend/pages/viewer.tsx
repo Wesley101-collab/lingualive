@@ -21,6 +21,8 @@ export default function ViewerPage() {
   const [roomCode, setRoomCode] = useState('');
   const [isReady, setIsReady] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(true);
+  const [highContrast, setHighContrast] = useState(false);
+  const [accessibilityMode, setAccessibilityMode] = useState(false);
   const captionBoxRef = useRef<HTMLDivElement>(null);
   const lastCaptionRef = useRef<string>('');
 
@@ -116,6 +118,17 @@ export default function ViewerPage() {
     URL.revokeObjectURL(url);
   };
 
+  // Toggle high contrast mode
+  const toggleHighContrast = () => {
+    setHighContrast(!highContrast);
+    document.body.classList.toggle('high-contrast');
+  };
+
+  // Toggle accessibility (fullscreen caption) mode
+  const toggleAccessibilityMode = () => {
+    setAccessibilityMode(!accessibilityMode);
+  };
+
   // Join screen - wait for router to be ready
   if (!isReady) {
     return (
@@ -169,115 +182,156 @@ export default function ViewerPage() {
   return (
     <>
       <Head><title>Viewer - LinguaLive</title></Head>
-      <div className={styles.page}>
+      <div className={`${styles.page} ${highContrast ? styles.highContrast : ''} ${accessibilityMode ? styles.accessibilityMode : ''}`}>
         <ReactionOverlay reactions={reactions} />
 
-        {/* Header */}
-        <header className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Live Captions</h1>
-            {roomCode && <span className={styles.roomBadge}>Room: {roomCode}</span>}
-          </div>
-          <div className={styles.headerActions}>
-            <span className={`${styles.badge} ${status === 'connected' ? styles.connected : ''}`}>
-              <span className={styles.dot} />
-              {status === 'connected' ? 'Connected' : 'Connecting'}
-            </span>
-            <button className={styles.leaveBtn} onClick={leaveRoom}>
-              Leave
-            </button>
-          </div>
-        </header>
-
-        {/* Controls */}
-        <div className={styles.controls}>
-          <select 
-            className={styles.langSelect}
-            value={language}
-            onChange={(e) => handleLanguageChange(e.target.value as LanguageCode)}
-          >
-            {Object.entries(SUPPORTED_LANGUAGES).map(([code, name]) => (
-              <option key={code} value={code}>{name}</option>
-            ))}
-          </select>
-          
-          <div className={styles.sizeControl}>
-            <span className={styles.sizeLabel}>A</span>
-            <input
-              type="range"
-              min="14"
-              max="28"
-              value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value))}
-              className={styles.sizeSlider}
-            />
-            <span className={styles.sizeLabelLg}>A</span>
-          </div>
-        </div>
-
-        {/* Options */}
-        <div className={styles.options}>
-          <button 
-            className={`${styles.optionBtn} ${autoScroll ? styles.on : ''}`}
-            onClick={() => setAutoScroll(!autoScroll)}
-          >
-            Scroll
-          </button>
-          <button 
-            className={`${styles.optionBtn} ${highlightEnabled ? styles.on : ''}`}
-            onClick={() => setHighlightEnabled(!highlightEnabled)}
-          >
-            Highlight
-          </button>
-          {ttsSupported && (
-            <button 
-              className={`${styles.optionBtn} ${listenMode ? styles.on : ''}`}
-              onClick={() => { toggleListenMode(); if (listenMode) stopSpeaking(); }}
+        {/* Accessibility Mode - Full screen captions */}
+        {accessibilityMode ? (
+          <div className={styles.accessibilityView}>
+            <div 
+              className={styles.accessibilityCaption}
+              style={{ fontSize: `${fontSize * 2}px` }}
             >
-              Listen
-            </button>
-          )}
-          <button 
-            className={styles.optionBtn}
-            onClick={exportCaptions}
-            disabled={captions.length === 0}
-          >
-            Export
-          </button>
-        </div>
-
-        {/* Captions */}
-        <div className={styles.captionCard}>
-          <div className={styles.captionHeader}>
-            <span>Captions</span>
-            <span className={styles.count}>{captions.length}</span>
+              {captions.length > 0 ? captions[captions.length - 1] : 'Waiting for captions...'}
+            </div>
+            <div className={styles.accessibilityControls}>
+              <button onClick={toggleAccessibilityMode} className={styles.exitAccessibility}>
+                Exit Accessibility Mode
+              </button>
+              <input
+                type="range"
+                min="14"
+                max="40"
+                value={fontSize}
+                onChange={(e) => setFontSize(Number(e.target.value))}
+                className={styles.accessibilitySlider}
+              />
+            </div>
           </div>
-          <div 
-            className={styles.captionBody} 
-            ref={captionBoxRef}
-            style={{ fontSize: `${fontSize}px` }}
-          >
-            {captions.length === 0 ? (
-              <div className={styles.empty}>
-                <p>Waiting for speaker...</p>
-                <p className={styles.hint}>Captions appear here automatically</p>
+        ) : (
+          <>
+            {/* Header */}
+            <header className={styles.header}>
+              <div>
+                <h1 className={styles.title}>Live Captions</h1>
+                {roomCode && <span className={styles.roomBadge}>Room: {roomCode}</span>}
               </div>
-            ) : (
-              captions.map((c, i) => (
-                <p 
-                  key={i} 
-                  className={styles.caption}
-                  dangerouslySetInnerHTML={{ 
-                    __html: highlightEnabled ? highlightKeywords(c) : c 
-                  }}
+              <div className={styles.headerActions}>
+                <span className={`${styles.badge} ${status === 'connected' ? styles.connected : ''}`}>
+                  <span className={styles.dot} />
+                  {status === 'connected' ? 'Connected' : 'Connecting'}
+                </span>
+                <button className={styles.leaveBtn} onClick={leaveRoom}>
+                  Leave
+                </button>
+              </div>
+            </header>
+
+            {/* Controls */}
+            <div className={styles.controls}>
+              <select 
+                className={styles.langSelect}
+                value={language}
+                onChange={(e) => handleLanguageChange(e.target.value as LanguageCode)}
+              >
+                {Object.entries(SUPPORTED_LANGUAGES).map(([code, name]) => (
+                  <option key={code} value={code}>{name}</option>
+                ))}
+              </select>
+              
+              <div className={styles.sizeControl}>
+                <span className={styles.sizeLabel}>A</span>
+                <input
+                  type="range"
+                  min="14"
+                  max="28"
+                  value={fontSize}
+                  onChange={(e) => setFontSize(Number(e.target.value))}
+                  className={styles.sizeSlider}
                 />
-              ))
-            )}
-          </div>
-          {isSpeaking && (
-            <div className={styles.speaking}>Speaking...</div>
-          )}
-        </div>
+                <span className={styles.sizeLabelLg}>A</span>
+              </div>
+            </div>
+
+            {/* Options */}
+            <div className={styles.options}>
+              <button 
+                className={`${styles.optionBtn} ${autoScroll ? styles.on : ''}`}
+                onClick={() => setAutoScroll(!autoScroll)}
+              >
+                Scroll
+              </button>
+              <button 
+                className={`${styles.optionBtn} ${highlightEnabled ? styles.on : ''}`}
+                onClick={() => setHighlightEnabled(!highlightEnabled)}
+              >
+                Highlight
+              </button>
+              <button 
+                className={`${styles.optionBtn} ${highContrast ? styles.on : ''}`}
+                onClick={toggleHighContrast}
+                title="High contrast mode for better visibility"
+              >
+                Contrast
+              </button>
+              <button 
+                className={`${styles.optionBtn}`}
+                onClick={toggleAccessibilityMode}
+                title="Full-screen caption mode"
+              >
+                Fullscreen
+              </button>
+              {ttsSupported && (
+                <button 
+                  className={`${styles.optionBtn} ${listenMode ? styles.on : ''}`}
+                  onClick={() => { toggleListenMode(); if (listenMode) stopSpeaking(); }}
+                >
+                  Listen
+                </button>
+              )}
+              <button 
+                className={styles.optionBtn}
+                onClick={exportCaptions}
+                disabled={captions.length === 0}
+              >
+                Export
+              </button>
+            </div>
+
+            {/* Captions */}
+            <div className={styles.captionCard}>
+              <div className={styles.captionHeader}>
+                <span>Captions</span>
+                <span className={styles.count}>{captions.length}</span>
+              </div>
+              <div 
+                className={styles.captionBody} 
+                ref={captionBoxRef}
+                style={{ fontSize: `${fontSize}px` }}
+              >
+                {captions.length === 0 ? (
+                  <div className={styles.empty}>
+                    <p>Waiting for speaker...</p>
+                    <p className={styles.hint}>Captions appear here automatically</p>
+                  </div>
+                ) : (
+                  captions.map((c, i) => (
+                    <p 
+                      key={i} 
+                      className={styles.caption}
+                      dangerouslySetInnerHTML={{ 
+                        __html: highlightEnabled ? highlightKeywords(c) : c 
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+              {isSpeaking && (
+                <div className={styles.speaking}>Speaking...</div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

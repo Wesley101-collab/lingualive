@@ -403,3 +403,112 @@
     max-height: 450px;
   }
 }
+
+
+/* High Contrast Mode */
+.highContrast {
+  --bg: #000000;
+  --bg-card: #000000;
+  --bg-hover: #1a1a1a;
+  --text: #ffffff;
+  --text-secondary: #ffffff;
+  --text-muted: #cccccc;
+  --border: #ffffff;
+  --primary: #ffff00;
+  --primary-light: #333300;
+}
+
+.highContrast .caption {
+  background: #000000;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.highContrast .caption:last-child {
+  background: #ffff00;
+  color: #000000;
+  border-color: #ffff00;
+}
+
+.highContrast .optionBtn {
+  border-width: 2px;
+}
+
+.highContrast .optionBtn.on {
+  background: #ffff00;
+  color: #000000;
+  border-color: #ffff00;
+}
+
+/* Accessibility Mode - Full Screen Captions */
+.accessibilityMode {
+  position: fixed;
+  inset: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: #000000;
+  z-index: 9999;
+}
+
+.accessibilityView {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.accessibilityCaption {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.4;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+.accessibilityControls {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  backdrop-filter: blur(10px);
+}
+
+.exitAccessibility {
+  padding: 0.75rem 1.5rem;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.exitAccessibility:hover {
+  background: #e0e0e0;
+}
+
+.accessibilitySlider {
+  width: 120px;
+  cursor: pointer;
+}
+
+/* High contrast in accessibility mode */
+.highContrast.accessibilityMode .accessibilityCaption {
+  color: #ffff00;
+}
+
+.highContrast.accessibilityMode .accessibilityControls {
+  background: rgba(255, 255, 0, 0.2);
+}
