@@ -1,26 +1,42 @@
 {
   "hooks": [
     {
-      "name": "Format on Save",
+      "name": "Format TypeScript",
       "description": "Run Prettier on TypeScript files when saved",
       "event": "onFileSave",
       "filePattern": "**/*.{ts,tsx}",
       "command": "npx prettier --write",
+      "enabled": true
+    },
+    {
+      "name": "Type Check Backend",
+      "description": "Run TypeScript type checking on backend changes",
+      "event": "onFileSave",
+      "filePattern": "lingualive/backend/**/*.ts",
+      "command": "cd lingualive/backend && npx tsc --noEmit",
+      "enabled": true
+    },
+    {
+      "name": "Lint CSS",
+      "description": "Check CSS files for issues",
+      "event": "onFileSave",
+      "filePattern": "**/*.css",
+      "command": "echo 'CSS saved'",
       "enabled": false
     },
     {
-      "name": "Type Check",
-      "description": "Run TypeScript type checking after changes",
-      "event": "onFileSave", 
-      "filePattern": "lingualive/**/*.{ts,tsx}",
-      "command": "npx tsc --noEmit",
-      "enabled": false
-    },
-    {
-      "name": "Git Status",
-      "description": "Show git status on session start",
+      "name": "Git Status on Start",
+      "description": "Show git status when starting a new session",
       "event": "onSessionStart",
-      "command": "git status --short",
+      "command": "git status --short && git log --oneline -3",
+      "enabled": true
+    },
+    {
+      "name": "Remind Testing",
+      "description": "Remind to test after component changes",
+      "event": "onFileSave",
+      "filePattern": "lingualive/frontend/pages/*.tsx",
+      "command": "echo 'Remember to test this page in browser'",
       "enabled": true
     }
   ]
