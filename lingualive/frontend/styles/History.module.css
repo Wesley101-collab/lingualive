@@ -38,7 +38,19 @@
 }
 
 .statIcon {
-  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+  border-radius: var(--radius);
+  color: var(--primary);
+}
+
+.statIcon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .statValue {
@@ -63,10 +75,20 @@
 }
 
 .emptyIcon {
-  font-size: 4rem;
-  display: block;
-  margin-bottom: 1rem;
-  opacity: 0.5;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  background: var(--bg-hover);
+  border-radius: 50%;
+  color: var(--text-muted);
+}
+
+.emptyIcon svg {
+  width: 40px;
+  height: 40px;
 }
 
 .emptyState h3 {
@@ -77,6 +99,29 @@
 .emptyState p {
   margin: 0;
   color: var(--text-secondary);
+}
+
+.startBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+
+.startBtn:hover {
+  background: var(--primary-hover);
+}
+
+.startBtn svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Toolbar */
@@ -100,8 +145,14 @@
 }
 
 .searchIcon {
-  font-size: 1rem;
-  opacity: 0.5;
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+}
+
+.searchIcon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .searchInput {
@@ -123,7 +174,42 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.clearSearch svg {
+  width: 14px;
+  height: 14px;
+}
+
+.clearSearch:hover {
+  background: var(--bg-active);
+  color: var(--text);
+}
+
+.clearAllBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.clearAllBtn:hover {
+  background: var(--danger-light);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.clearAllBtn svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Sessions */
@@ -194,6 +280,14 @@
   align-items: center;
 }
 
+.langBadge {
+  padding: 0.25rem 0.625rem;
+  background: var(--bg-card);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
 .sessionActions {
   display: flex;
   gap: 0.5rem;
@@ -209,12 +303,24 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.875rem;
+  color: var(--text-secondary);
   transition: all var(--transition);
+}
+
+.actionBtn svg {
+  width: 16px;
+  height: 16px;
 }
 
 .actionBtn:hover {
   background: var(--bg-active);
+  color: var(--text);
+}
+
+.actionBtn.deleteBtn:hover {
+  background: var(--danger-light);
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 /* Modal */
@@ -262,6 +368,17 @@
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.closeBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.closeBtn:hover {
+  background: var(--bg-active);
+  color: var(--text);
 }
 
 .modalBody {
@@ -275,6 +392,14 @@
   gap: 0.5rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
+}
+
+.metaBadge {
+  padding: 0.25rem 0.75rem;
+  background: var(--bg-hover);
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
 }
 
 .transcriptBox {
@@ -305,12 +430,71 @@
   border-top: 1px solid var(--border);
 }
 
-.modalFooter .btn {
+.secondaryBtn {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.secondaryBtn:hover {
+  background: var(--bg-active);
+  color: var(--text);
+}
+
+.secondaryBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.primaryBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.primaryBtn:hover {
+  background: var(--primary-hover);
+}
+
+.primaryBtn svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* Mobile */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .page {
+    padding: 0;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .statCard {
+    padding: 1rem;
+  }
+  
   .toolbar {
     flex-direction: column;
   }
@@ -321,9 +505,63 @@
   
   .sessionsSection {
     padding: 1rem;
+    border-radius: var(--radius);
+  }
+  
+  .sessionCard {
+    padding: 0.875rem 1rem;
+  }
+  
+  .sessionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .sessionFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .sessionActions {
+    width: 100%;
+    justify-content: flex-end;
   }
   
   .modalContent {
     max-height: 90vh;
+    margin: 0.5rem;
+  }
+  
+  .modalHeader {
+    padding: 1rem;
+  }
+  
+  .modalBody {
+    padding: 1rem;
+  }
+  
+  .modalFooter {
+    padding: 1rem;
+    flex-direction: column;
+  }
+  
+  .modalFooter button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .emptyState {
+    padding: 2rem 1rem;
   }
 }

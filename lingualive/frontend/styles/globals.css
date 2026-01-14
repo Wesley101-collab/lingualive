@@ -57,6 +57,68 @@
   --primary-light: #312e81;
 }
 
+/* Theme classes */
+.theme-light {
+  --bg: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-hover: #f1f5f9;
+  --text: #0f172a;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+}
+
+.theme-dark {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-elevated: #334155;
+  --bg-hover: #334155;
+  --bg-active: #475569;
+  --text: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+  --border-light: #1e293b;
+  --primary-light: #312e81;
+}
+
+.theme-high-contrast {
+  --bg: #000000;
+  --bg-card: #0a0a0a;
+  --bg-elevated: #1a1a1a;
+  --bg-hover: #1a1a1a;
+  --bg-active: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #b0b0b0;
+  --border: #444444;
+  --border-light: #333333;
+  --primary: #a5b4fc;
+  --primary-light: #1e1b4b;
+  --primary-hover: #818cf8;
+}
+
+.theme-dyslexia {
+  --bg: #fdf6e3;
+  --bg-card: #fefbf3;
+  --bg-elevated: #ffffff;
+  --bg-hover: #f5edd6;
+  --text: #073642;
+  --text-secondary: #586e75;
+  --text-muted: #93a1a1;
+  --border: #eee8d5;
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  line-height: 1.8;
+}
+
+.theme-dyslexia p,
+.theme-dyslexia span,
+.theme-dyslexia div {
+  line-height: 1.8;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -306,6 +368,31 @@ input:focus, select:focus, textarea:focus {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* Keyword Highlighting */
+.keyword-number {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.keyword-date {
+  background: var(--success-light);
+  color: var(--success);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.keyword-action {
+  background: var(--warning-light);
+  color: #b45309;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-weight: 600;
 }
 
 /* Mobile */

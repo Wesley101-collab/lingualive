@@ -239,28 +239,40 @@ export default function UploadPage() {
             className={`${styles.tab} ${activeTab === 'input' ? styles.active : ''}`}
             onClick={() => setActiveTab('input')}
           >
-            ✏️ Input
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+            Input
           </button>
           <button 
             className={`${styles.tab} ${activeTab === 'transcript' ? styles.active : ''}`}
             onClick={() => setActiveTab('transcript')}
             disabled={!transcript}
           >
-            📝 Transcript
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </svg>
+            Transcript
           </button>
           <button 
             className={`${styles.tab} ${activeTab === 'summary' ? styles.active : ''}`}
             onClick={() => setActiveTab('summary')}
             disabled={!analysis}
           >
-            ✨ Summary
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            Summary
           </button>
           <button 
             className={`${styles.tab} ${activeTab === 'actions' ? styles.active : ''}`}
             onClick={() => setActiveTab('actions')}
             disabled={!analysis}
           >
-            ✅ Actions {analysis && analysis.actionItems.length > 0 && `(${analysis.actionItems.length})`}
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            Actions {analysis && analysis.actionItems.length > 0 && `(${analysis.actionItems.length})`}
           </button>
         </div>
 
@@ -274,13 +286,19 @@ export default function UploadPage() {
                   className={`${styles.modeBtn} ${inputMode === 'text' ? styles.active : ''}`}
                   onClick={() => setInputMode('text')}
                 >
-                  ✏️ Paste Text
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                  </svg>
+                  Paste Text
                 </button>
                 <button 
                   className={`${styles.modeBtn} ${inputMode === 'file' ? styles.active : ''}`}
                   onClick={() => setInputMode('file')}
                 >
-                  📁 Upload File
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/>
+                  </svg>
+                  Upload File
                 </button>
               </div>
 
@@ -310,7 +328,12 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
                         {isAnalyzing ? (
                           <><span className={styles.spinner} /> Analyzing...</>
                         ) : (
-                          <>🤖 Analyze with AI</>
+                          <>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                            </svg>
+                            Analyze with AI
+                          </>
                         )}
                       </button>
                     </div>
@@ -335,14 +358,22 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
 
                     {!file ? (
                       <>
-                        <div className={styles.uploadIcon}>🎵</div>
+                        <div className={styles.uploadIcon}>
+                          <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                          </svg>
+                        </div>
                         <h3>Drop audio or video file here</h3>
                         <p>or click to browse</p>
                         <span className={styles.formats}>MP3, WAV, MP4, WebM (max 25MB)</span>
                       </>
                     ) : (
                       <div className={styles.fileInfo}>
-                        <span className={styles.fileIcon}>🎬</span>
+                        <span className={styles.fileIcon}>
+                          <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                          </svg>
+                        </span>
                         <div className={styles.fileDetails}>
                           <span className={styles.fileName}>{file.name}</span>
                           <span className={styles.fileSize}>{(file.size / 1024 / 1024).toFixed(1)} MB</span>
@@ -351,7 +382,9 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
                           className={styles.removeBtn}
                           onClick={(e) => { e.stopPropagation(); setFile(null); }}
                         >
-                          ✕
+                          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                          </svg>
                         </button>
                       </div>
                     )}
@@ -367,7 +400,12 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
                       {isProcessing ? (
                         <><span className={styles.spinner} /> Transcribing...</>
                       ) : (
-                        <>🎯 Transcribe & Analyze</>
+                        <>
+                          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                          </svg>
+                          Transcribe & Analyze
+                        </>
                       )}
                     </button>
                   )}
@@ -375,7 +413,12 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
               )}
 
               {error && (
-                <div className={styles.error}>⚠️ {error}</div>
+                <div className={styles.error}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                  </svg>
+                  {error}
+                </div>
               )}
             </div>
           )}
@@ -392,8 +435,11 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
                     <option key={code} value={code}>{name}</option>
                   ))}
                 </select>
-                <button className="btn btn-secondary btn-sm" onClick={exportContent}>
-                  📥 Export
+                <button className={styles.exportBtn} onClick={exportContent}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                  </svg>
+                  Export
                 </button>
               </div>
               <div className={styles.transcriptContent}>
@@ -409,12 +455,22 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
           {activeTab === 'summary' && analysis && (
             <div className={styles.summaryTab}>
               <div className={styles.summaryBox}>
-                <h3>📋 Summary</h3>
+                <h3>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                  Summary
+                </h3>
                 <p>{analysis.summary}</p>
               </div>
               {analysis.keyPoints.length > 0 && (
                 <div className={styles.keyPointsBox}>
-                  <h3>💡 Key Points</h3>
+                  <h3>
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                      <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
+                    </svg>
+                    Key Points
+                  </h3>
                   <ul>
                     {analysis.keyPoints.map((point, i) => (
                       <li key={i}>{point}</li>
@@ -447,11 +503,17 @@ Today we discussed the Q4 roadmap. John will lead the mobile app redesign. Sarah
         {/* Bottom Actions */}
         {transcript && (
           <div className={styles.bottomActions}>
-            <button className="btn btn-secondary" onClick={clearAll}>
-              🔄 Start Over
+            <button className={styles.secondaryBtn} onClick={clearAll}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              </svg>
+              Start Over
             </button>
-            <button className="btn btn-primary" onClick={exportContent}>
-              📥 Export All
+            <button className={styles.primaryBtn} onClick={exportContent}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+              </svg>
+              Export All
             </button>
           </div>
         )}

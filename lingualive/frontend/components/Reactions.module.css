@@ -1,0 +1,60 @@
+.reactionBar {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.reactionBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reactionBtn:hover {
+  background: var(--bg-hover);
+  transform: scale(1.2);
+}
+
+.reactionBtn:active {
+  transform: scale(0.9);
+}
+
+.reactionOverlay {
+  position: fixed;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  height: 200px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.floatingReaction {
+  position: absolute;
+  bottom: 0;
+  font-size: 2rem;
+  animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px) scale(1.5);
+  }
+}

@@ -33,12 +33,19 @@
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition);
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab svg {
+  opacity: 0.7;
 }
 
 .tab:hover:not(:disabled) {
@@ -46,9 +53,17 @@
   background: var(--bg-hover);
 }
 
+.tab:hover:not(:disabled) svg {
+  opacity: 1;
+}
+
 .tab.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
+}
+
+.tab.active svg {
+  opacity: 1;
 }
 
 .tab:disabled {
@@ -84,10 +99,17 @@
   background: none;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   cursor: pointer;
   color: var(--text-secondary);
   transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modeBtn svg {
+  opacity: 0.7;
 }
 
 .modeBtn:hover {
@@ -98,6 +120,10 @@
   background: var(--bg-card);
   color: var(--primary);
   box-shadow: var(--shadow-sm);
+}
+
+.modeBtn.active svg {
+  opacity: 1;
 }
 
 .textInput {
@@ -188,6 +214,13 @@
   color: var(--danger);
   border-radius: var(--radius);
   font-size: 0.9375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error svg {
+  flex-shrink: 0;
 }
 
 /* Upload Zone */
@@ -214,8 +247,9 @@
 }
 
 .uploadIcon {
-  font-size: 3rem;
   margin-bottom: 0.75rem;
+  color: var(--primary);
+  opacity: 0.8;
 }
 
 .uploadZone h3 {
@@ -246,7 +280,7 @@
 }
 
 .fileIcon {
-  font-size: 2rem;
+  color: var(--primary);
 }
 
 .fileDetails {
@@ -273,7 +307,9 @@
   background: var(--danger-light);
   color: var(--danger);
   cursor: pointer;
-  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background var(--transition);
 }
 
@@ -303,6 +339,26 @@
   background: var(--bg-card);
   font-size: 0.9375rem;
   min-width: 150px;
+  color: var(--text);
+}
+
+.exportBtn {
+  padding: 0.5rem 1rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition);
+}
+
+.exportBtn:hover {
+  background: var(--bg-active);
+  color: var(--text);
 }
 
 .transcriptContent {
@@ -342,6 +398,9 @@
   font-size: 1rem;
   margin: 0 0 0.75rem;
   color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .summaryBox p {
@@ -418,6 +477,45 @@
   margin-top: 1.5rem;
 }
 
+.secondaryBtn {
+  padding: 0.75rem 1.25rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition);
+}
+
+.secondaryBtn:hover {
+  background: var(--bg-active);
+  color: var(--text);
+}
+
+.primaryBtn {
+  padding: 0.75rem 1.25rem;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition);
+}
+
+.primaryBtn:hover {
+  background: var(--primary-hover);
+}
+
 /* Help Section */
 .helpSection {
   margin-top: 2rem;
@@ -449,7 +547,43 @@
 }
 
 /* Mobile */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .page {
+    padding: 0;
+  }
+  
+  .tabs {
+    margin: 0 -0.75rem 1rem;
+    padding: 0 0.75rem;
+  }
+  
+  .tab {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .content {
+    min-height: 350px;
+    border-radius: var(--radius);
+  }
+  
+  .inputTab {
+    padding: 1rem;
+  }
+  
+  .modeToggle {
+    width: 100%;
+  }
+  
+  .modeBtn {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .textInput {
+    min-height: 200px;
+  }
+  
   .inputFooter {
     flex-direction: column;
     align-items: stretch;
@@ -464,6 +598,14 @@
     justify-content: center;
   }
   
+  .uploadZone {
+    padding: 2rem 1rem;
+  }
+  
+  .transcriptTab {
+    padding: 1rem;
+  }
+  
   .transcriptToolbar {
     flex-direction: column;
     align-items: stretch;
@@ -473,11 +615,41 @@
     width: 100%;
   }
   
+  .summaryTab {
+    padding: 1rem;
+  }
+  
+  .actionsTab {
+    padding: 1rem;
+  }
+  
   .bottomActions {
     flex-direction: column;
   }
   
-  .bottomActions .btn {
+  .bottomActions button {
     width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+  
+  .fileInfo {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .fileDetails {
+    text-align: center;
   }
 }
