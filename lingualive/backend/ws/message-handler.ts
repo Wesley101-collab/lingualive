@@ -111,11 +111,15 @@ export class MessageHandler {
    * Initializes speech recognition service and starts transcription
    * @throws Logs error if Speechmatics connection fails
    */
+  /**
+   * Initializes speech recognition service and starts transcription
+   * @throws Logs error if Speechmatics connection fails
+   */
   private async startSpeaking(): Promise<void> {
     const apiKey = process.env.SPEECHMATICS_API_KEY;
     
     if (!apiKey) {
-      this.log.warn('Speechmatics API key not configured');
+      this.log.warn('Speechmatics API key not configured - speech recognition disabled');
       return;
     }
 
@@ -129,6 +133,7 @@ export class MessageHandler {
     } catch (error) {
       this.log.error('Failed to connect to Speechmatics', {
         error: error instanceof Error ? error.message : 'Unknown error',
+        apiKeyPresent: !!apiKey,
       });
     }
   }
