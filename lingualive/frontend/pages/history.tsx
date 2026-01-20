@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { AISummary } from '../components/AISummary';
 import styles from '../styles/History.module.css';
 
 interface Session {
@@ -215,6 +216,12 @@ ${session.captions.join('\n\n')}
                   <span className={styles.metaBadge}>{selectedSession.time}</span>
                   <span className={styles.metaBadge}>{selectedSession.captionCount} captions</span>
                 </div>
+                
+                {/* AI Summary Section */}
+                <AISummary 
+                  transcript={selectedSession.captions.join('\n\n')} 
+                />
+                
                 <div className={styles.transcriptBox}>
                   {selectedSession.captions.map((caption, i) => (
                     <p key={i} className={styles.captionLine}>{caption}</p>

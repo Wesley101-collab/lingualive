@@ -122,7 +122,12 @@ export class ConnectionManager {
     const data = JSON.stringify(message);
     
     for (const [ws, client] of this.clients) {
-      if (client.language === language && ws.readyState === WebSocket.OPEN) {
+      // Send to viewers with matching language OR to speaker for English captions
+      const shouldSend = 
+        (client.role === 'viewer' && client.language === language) ||
+        (client.role === 'speaker' && language === 'en');
+      
+      if (shouldSend && ws.readyState === WebSocket.OPEN) {
         ws.send(data);
       }
     }

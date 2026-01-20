@@ -211,6 +211,12 @@ export default function UploadPage() {
   };
 
   const clearAll = () => {
+    if (transcript || analysis) {
+      if (!confirm('Clear all content and start over?')) {
+        return;
+      }
+    }
+    
     setManualInput('');
     setTranscript('');
     setTranslatedText('');
@@ -218,6 +224,7 @@ export default function UploadPage() {
     setFile(null);
     setError(null);
     setActiveTab('input');
+    setInputMode('text');
     localStorage.removeItem('lingualive_analysis');
   };
 

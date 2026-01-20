@@ -40,6 +40,8 @@ export function useAudioStream({ onAudioData }: UseAudioStreamOptions) {
       mediaStreamRef.current = stream;
       
       const audioContext = new AudioContext({ sampleRate: 16000 });
+      const actualSampleRate = audioContext.sampleRate;
+      console.log('[Audio] Requested: 16000 Hz, Actual:', actualSampleRate);
       audioContextRef.current = audioContext;
       
       const source = audioContext.createMediaStreamSource(stream);
@@ -51,10 +53,26 @@ export function useAudioStream({ onAudioData }: UseAudioStreamOptions) {
         if (!mediaStreamRef.current) return;
         
         const inputData = e.inputBuffer.getChannelData(0);
-        const pcmData = new Int16Array(inputData.length);
         
-        for (let i = 0; i < inputData.length; i++) {
-          const s = Math.max(-1, Math.min(1, inputData[i]));
+        // Resample to 16kHz if browser uses different rate
+        let outputData: Float32Array;
+        if (actualSampleRate !== 16000) {
+          const ratio = actualSampleRate / 16000;
+          const newLength = Math.round(inputData.length / ratio);
+          outputData = new Float32Array(newLength);
+          
+          for (let i = 0; i < newLength; i++) {
+            const srcIndex = Math.floor(i * ratio);
+            outputData[i] = inputData[srcIndex];
+          }
+        } else {
+          outputData = inputData;
+        }
+        
+        // Convert to 16-bit PCM
+        const pcmData = new Int16Array(outputData.length);
+        for (let i = 0; i < outputData.length; i++) {
+          const s = Math.max(-1, Math.min(1, outputData[i]));
           pcmData[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
         }
         

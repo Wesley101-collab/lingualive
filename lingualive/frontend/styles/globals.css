@@ -427,20 +427,42 @@ input:focus, select:focus, textarea:focus {
     --radius-lg: 12px;
   }
 
+  html {
+    font-size: 14px !important;
+  }
+
   body {
-    font-size: 14px;
+    font-size: 14px !important;
+    overflow-x: hidden;
   }
 
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.75rem !important;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
 
   h3 {
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
+  }
+
+  /* Force mobile layout */
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 0.5rem !important;
   }
 }
 
@@ -450,20 +472,35 @@ input:focus, select:focus, textarea:focus {
     --radius-lg: 10px;
   }
 
+  html {
+    font-size: 13px !important;
+  }
+
   body {
-    font-size: 13px;
+    font-size: 13px !important;
   }
 
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
 
   h2 {
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
   }
 
   h3 {
-    font-size: 1.125rem;
+    font-size: 1.125rem !important;
+  }
+
+  /* Ensure buttons are touch-friendly */
+  button, .btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  /* Ensure inputs are readable */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
   }
 }
 

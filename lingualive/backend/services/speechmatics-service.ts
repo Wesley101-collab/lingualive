@@ -180,11 +180,8 @@ export class SpeechmaticsService {
     }
 
     try {
-      // Send AddAudio message (binary data)
-      const header = Buffer.from(JSON.stringify({ message: 'AddAudio' }) + '\n');
-      const packet = Buffer.concat([header, audioBuffer]);
-      
-      this.ws.send(packet);
+      // Send pure binary audio data (Speechmatics expects raw PCM chunks)
+      this.ws.send(audioBuffer);
     } catch (error) {
       this.log.error('Failed to send audio', {
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -250,13 +247,18 @@ export class SpeechmaticsService {
       
       if (results.length === 0) return;
 
-      // Get the last result (most recent)
-      const lastResult = results[results.length - 1];
-      
-      // Extract transcript from alternatives
-      if (lastResult.alternatives && lastResult.alternatives.length > 0) {
-        const transcript = lastResult.alternatives[0].transcript;
+      // Combine all word contents into full transcript
+      const words: string[] = [];
+      for (const result of results) {
+        if (result.alternatives && result.alternatives.length > 0) {
+          const word = result.alternatives[0].content;  // Use 'content' not 'transcript'
+          if (word) words.push(word);
+        }
+      }
 
+      const transcript = words.join(' ').trim();
+
+      if (transcript.length > 0) {
         this.log.debug('Transcript received', {
           text: transcript.substring(0, 50),
           isFinal,
