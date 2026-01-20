@@ -199,13 +199,6 @@ export default function SpeakerPage() {
   const clearCaptions = () => {
     if (captions.length === 0) return;
     
-    // Only show confirmation if there are unsaved captions
-    if (!sessionSaved) {
-      if (!confirm('Clear captions without saving to history?')) {
-        return;
-      }
-    }
-    
     setCaptions([]);
     setSessionSaved(false);
     setSessionStartTime(null);
