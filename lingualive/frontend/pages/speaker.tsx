@@ -241,22 +241,23 @@ export default function SpeakerPage() {
             <span className={styles.roomLabel}>Room</span>
             <button 
               className={styles.roomCode} 
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(roomCode);
+              onClick={() => {
+                navigator.clipboard.writeText(roomCode).then(() => {
                   setRoomCodeCopied(true);
                   setTimeout(() => setRoomCodeCopied(false), 2000);
-                } catch {
-                  // Fallback for browsers that don't support clipboard API
+                }).catch(() => {
+                  // Fallback
                   const input = document.createElement('input');
                   input.value = roomCode;
+                  input.style.position = 'fixed';
+                  input.style.opacity = '0';
                   document.body.appendChild(input);
                   input.select();
                   document.execCommand('copy');
                   document.body.removeChild(input);
                   setRoomCodeCopied(true);
                   setTimeout(() => setRoomCodeCopied(false), 2000);
-                }
+                });
               }}
               title="Click to copy room code"
             >

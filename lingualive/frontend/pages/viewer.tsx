@@ -296,6 +296,13 @@ export default function ViewerPage() {
               >
                 Export
               </button>
+              <button 
+                className={styles.optionBtn}
+                onClick={() => setCaptions([])}
+                disabled={captions.length === 0}
+              >
+                Clear
+              </button>
             </div>
 
             {/* Captions */}
