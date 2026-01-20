@@ -35,3 +35,10 @@ Thumbs.db
 *.log
 *.tmp
 uploads/
+
+# Media files (too large for git)
+*.mp4
+*.mov
+*.avi
+*.webm
+*.mkv

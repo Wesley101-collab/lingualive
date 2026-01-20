@@ -2,6 +2,18 @@
 
 Real-time multilingual live captions for classrooms, talks, and meetings.
 
+## 🎥 Demo
+
+A comprehensive demo video is available locally at `lingualive/Lingualive Demo.mp4` showcasing all features in action.
+
+**Quick Demo:**
+1. Speaker starts session → Gets room code
+2. Viewers join with code → Select language
+3. Real-time captions appear in multiple languages
+4. AI features: smart formatting, summaries, action items
+
+See [docs/DEMO.md](docs/DEMO.md) for detailed demo guide and scenarios.
+
 ## Features
 
 ### Core
@@ -159,6 +171,17 @@ Access from mobile: http://YOUR_IP:3000 (e.g., http://192.168.1.4:3000)
 - ✅ Improved mobile responsiveness across all pages
 - ✅ Fixed Speechmatics RT API integration with proper audio resampling (48kHz → 16kHz)
 - ✅ Speaker now receives own captions in real-time
+- ✅ Room code is now clickable to copy with visual feedback
+- ✅ Added clear button for viewers
+
+## Documentation
+
+- [Setup Guide](SETUP.md) - Installation and configuration
+- [Demo Guide](docs/DEMO.md) - Demo video walkthrough and scenarios
+- [Features](FEATURES.md) - Complete feature list
+- [API Documentation](docs/API.md) - API endpoints and usage
+- [Deployment](docs/DEPLOYMENT.md) - Production deployment guide
+- [Contributing](CONTRIBUTING.md) - How to contribute
 
 ## Tech Stack
 
