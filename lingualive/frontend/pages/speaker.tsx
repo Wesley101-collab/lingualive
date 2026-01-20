@@ -34,6 +34,7 @@ export default function SpeakerPage() {
   const [roomCode, setRoomCode] = useState('');
   const [sessionStartTime, setSessionStartTime] = useState<Date | null>(null);
   const [copied, setCopied] = useState(false);
+  const [roomCodeCopied, setRoomCodeCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [highlightEnabled, setHighlightEnabled] = useState(true);
   const [smartFormat, setSmartFormat] = useState(true);
@@ -243,15 +244,37 @@ export default function SpeakerPage() {
               onClick={async () => {
                 try {
                   await navigator.clipboard.writeText(roomCode);
-                  alert('Room code copied!');
+                  setRoomCodeCopied(true);
+                  setTimeout(() => setRoomCodeCopied(false), 2000);
                 } catch {
-                  prompt('Copy room code:', roomCode);
+                  // Fallback for browsers that don't support clipboard API
+                  const input = document.createElement('input');
+                  input.value = roomCode;
+                  document.body.appendChild(input);
+                  input.select();
+                  document.execCommand('copy');
+                  document.body.removeChild(input);
+                  setRoomCodeCopied(true);
+                  setTimeout(() => setRoomCodeCopied(false), 2000);
                 }
               }}
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
               title="Click to copy room code"
             >
-              {roomCode}
+              {roomCodeCopied ? (
+                <>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style={{ marginRight: '4px' }}>
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                  </svg>
+                  Copied!
+                </>
+              ) : (
+                <>
+                  {roomCode}
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style={{ marginLeft: '6px', opacity: 0.6 }}>
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                  </svg>
+                </>
+              )}
             </button>
           </div>
           <div className={styles.roomActions}>

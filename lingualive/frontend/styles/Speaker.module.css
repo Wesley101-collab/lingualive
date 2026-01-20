@@ -75,11 +75,29 @@
 }
 
 .roomCode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   font-size: 1.125rem;
   font-weight: 700;
   font-family: monospace;
   letter-spacing: 0.1em;
   color: var(--primary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.roomCode:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.roomCode:active {
+  transform: scale(0.98);
 }
 
 .copyBtn {
@@ -335,10 +353,6 @@
   .actionBtn {
     padding: 0.5rem;
     font-size: 0.75rem;
-  }
-  
-  .transcript {
-    /* mobile */
   }
   
   .transcriptBody {
