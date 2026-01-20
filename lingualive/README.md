@@ -51,35 +51,59 @@ Real-time multilingual live captions for classrooms, talks, and meetings.
 
 ## Setup
 
-1. Install dependencies:
+### Prerequisites
+- Node.js 18+ and npm 9+
+- Speechmatics API key (required)
+- Groq API key (required for AI features)
+
+### Installation
+
+1. **Install dependencies:**
 ```bash
 cd lingualive/backend && npm install
 cd ../frontend && npm install
 ```
 
-2. Copy `.env.example` to `.env` and add your API keys:
+2. **Configure environment variables:**
+
+Create `lingualive/.env`:
 ```bash
-cp .env.example .env
+SPEECHMATICS_API_KEY=your_speechmatics_key_here
+GROQ_API_KEY=your_groq_key_here
+WS_PORT=3001
+NODE_ENV=development
 ```
 
-Required keys:
-- `SPEECHMATICS_API_KEY` - For real-time transcription
-- `GROQ_API_KEY` - For AI features (summarization, smart formatting)
-
-3. Start the backend:
+Create `lingualive/frontend/.env.local`:
 ```bash
-cd backend && npm start
+GROQ_API_KEY=your_groq_key_here
+NEXT_PUBLIC_WS_URL=ws://localhost:3001
 ```
 
-4. Start the frontend:
+**Important:** The frontend needs its own `.env.local` file with the Groq API key for AI features to work.
+
+3. **Start the backend:**
 ```bash
-cd frontend && npm run dev
+cd lingualive/backend
+npm start
 ```
 
-For network access (mobile testing):
+Backend runs on port 3001 (WebSocket server)
+
+4. **Start the frontend:**
 ```bash
-cd frontend && npm run dev -- -H 0.0.0.0
+cd lingualive/frontend
+npm run dev
 ```
+
+Frontend runs on http://localhost:3000
+
+**For network access (mobile testing):**
+```bash
+npm run dev -- -H 0.0.0.0
+```
+
+Access from mobile: http://YOUR_IP:3000 (e.g., http://192.168.1.4:3000)
 
 ## Pages
 
@@ -110,11 +134,31 @@ cd frontend && npm run dev -- -H 0.0.0.0
 
 ## Environment Variables
 
+### Backend (.env)
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `SPEECHMATICS_API_KEY` | Speechmatics API key | Yes |
-| `GROQ_API_KEY` | Groq API key for AI features | Optional |
-| `WS_PORT` | WebSocket port (default: 3001) | No |
+| `SPEECHMATICS_API_KEY` | Speechmatics RT API key for transcription | Yes |
+| `GROQ_API_KEY` | Groq API key for AI features | Yes |
+| `WS_PORT` | WebSocket server port | No (default: 3001) |
+| `NODE_ENV` | Environment mode | No (default: development) |
+
+### Frontend (.env.local)
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `GROQ_API_KEY` | Groq API key for AI features | Yes |
+| `NEXT_PUBLIC_WS_URL` | WebSocket server URL | Yes |
+
+**Note:** Both backend and frontend need the Groq API key for AI features to work properly.
+
+## Recent Updates
+
+### v1.2.0 (January 2026)
+- ✅ Fixed AI features (summarization, smart formatting) - requires Groq API key in both `.env` files
+- ✅ Fixed clear button in Speaker page - now clears immediately without confirmation
+- ✅ Added AI summary to History page sessions
+- ✅ Improved mobile responsiveness across all pages
+- ✅ Fixed Speechmatics RT API integration with proper audio resampling (48kHz → 16kHz)
+- ✅ Speaker now receives own captions in real-time
 
 ## Tech Stack
 
