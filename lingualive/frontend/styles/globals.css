@@ -419,3 +419,56 @@ input:focus, select:focus, textarea:focus {
     display: none !important;
   }
 }
+
+/* Mobile Responsive Global Styles */
+@media (max-width: 768px) {
+  :root {
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --radius: 6px;
+    --radius-lg: 10px;
+  }
+
+  body {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+}
+
+/* Ensure viewport is properly set */
+@viewport {
+  width: device-width;
+  zoom: 1;
+}

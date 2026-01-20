@@ -175,9 +175,11 @@ export function useWebSocket({ role, onMessage }: UseWebSocketOptions): UseWebSo
    */
   const send = useCallback((data: object) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify(data));
+      const message = JSON.stringify(data);
+      console.log('[WebSocket] Sending message:', data);
+      wsRef.current.send(message);
     } else {
-      console.warn('[WebSocket] Cannot send - connection not open');
+      console.warn('[WebSocket] Cannot send - connection not open', data);
     }
   }, []);
 

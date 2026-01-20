@@ -47,6 +47,9 @@ export function useAudioStream({ onAudioData }: UseAudioStreamOptions) {
       processorRef.current = processor;
 
       processor.onaudioprocess = (e) => {
+        // Only process if we're actually streaming
+        if (!mediaStreamRef.current) return;
+        
         const inputData = e.inputBuffer.getChannelData(0);
         const pcmData = new Int16Array(inputData.length);
         

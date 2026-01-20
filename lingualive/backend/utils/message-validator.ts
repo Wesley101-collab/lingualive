@@ -28,6 +28,11 @@ export function validateMessage(data: unknown): WSMessage | null {
   if (!msg.type || typeof msg.type !== 'string') return null;
   if (!validEventTypes.includes(msg.type as typeof WS_EVENTS[keyof typeof WS_EVENTS])) return null;
   
+  // Add timestamp if missing (for backwards compatibility)
+  if (!msg.timestamp || typeof msg.timestamp !== 'number') {
+    msg.timestamp = Date.now();
+  }
+  
   switch (msg.type) {
     case WS_EVENTS.AUDIO_DATA:
       if (typeof msg.data !== 'string') return null;
@@ -48,7 +53,7 @@ export function validateMessage(data: unknown): WSMessage | null {
   
   return {
     ...msg,
-    timestamp: Date.now(),
+    timestamp: msg.timestamp as number,
   } as WSMessage;
 }
 

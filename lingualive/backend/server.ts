@@ -78,11 +78,22 @@ wss.on('connection', (ws: WebSocket, req: IncomingMessage) => {
   ws.on('message', async (data) => {
     try {
       const parsed = JSON.parse(data.toString());
+      console.log(`[Server] Message received from ${client.id}:`, parsed.type);
+      
+      // Extra logging for SPEAKER_START
+      if (parsed.type === 'SPEAKER_START') {
+        console.log('*** SPEAKER_START MESSAGE RECEIVED IN SERVER ***');
+      }
+      
       const validated = validateMessage(parsed);
       if (validated) {
+        console.log(`[Server] Message validated, passing to handler:`, validated.type);
         await messageHandler.handleMessage(ws, validated);
+      } else {
+        console.log(`[Server] Message validation failed for ${client.id}:`, parsed);
       }
     } catch (error) {
+      console.error(`[Server] Error parsing message from ${client.id}:`, error);
       ws.send(JSON.stringify({
         type: WS_EVENTS.ERROR,
         message: 'Invalid message format',

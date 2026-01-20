@@ -42,6 +42,8 @@ export class MessageHandler {
   private translationService: TranslationService;
   private speechmaticsService: SpeechmaticsService | null = null;
   private log = logger.child({ service: 'MessageHandler' });
+  private speechmaticsInitialized = false;
+  private startingPromise: Promise<void> | null = null;
 
   /**
    * Creates a new MessageHandler instance
@@ -51,6 +53,20 @@ export class MessageHandler {
   constructor(connectionManager: ConnectionManager, translationService: TranslationService) {
     this.connectionManager = connectionManager;
     this.translationService = translationService;
+  }
+
+  /**
+   * Ensures Speechmatics is started (idempotent)
+   * Multiple calls will wait for the same initialization
+   */
+  private async ensureSpeechmaticsStarted(): Promise<void> {
+    if (this.speechmaticsService?.connected) return;
+    if (this.startingPromise) return this.startingPromise;
+    
+    this.startingPromise = this.startSpeaking()
+      .finally(() => { this.startingPromise = null; });
+    
+    return this.startingPromise;
   }
 
   /**
@@ -66,11 +82,22 @@ export class MessageHandler {
       return;
     }
 
+    // Log ALL messages for debugging
+    console.log(`[MessageHandler] Received message type: ${message.type} from ${client.role} (${client.id})`);
+    
+    this.log.debug('Message received', { 
+      type: message.type, 
+      clientId: client.id,
+      role: client.role 
+    });
+
     try {
       switch (message.type) {
         case WS_EVENTS.SPEAKER_START:
+          console.log('[MessageHandler] *** SPEAKER_START RECEIVED ***');
+          this.log.info('SPEAKER_START received', { clientId: client.id });
           if (client.role === 'speaker') {
-            await this.startSpeaking();
+            await this.ensureSpeechmaticsStarted();
           }
           break;
 
@@ -82,6 +109,12 @@ export class MessageHandler {
 
         case WS_EVENTS.AUDIO_DATA:
           if (client.role === 'speaker' && message.data) {
+            // Auto-initialize Speechmatics on first audio data
+            if (!this.speechmaticsInitialized) {
+              console.log('[MessageHandler] First audio data received, initializing Speechmatics...');
+              this.speechmaticsInitialized = true;
+              await this.ensureSpeechmaticsStarted();
+            }
             this.handleAudioData(message.data);
           }
           break;
@@ -123,18 +156,22 @@ export class MessageHandler {
       return;
     }
 
+    this.log.info('Creating Speechmatics service...');
     this.speechmaticsService = new SpeechmaticsService(apiKey, async (text, isFinal) => {
       await this.handleTranscript(text, isFinal);
     });
 
     try {
+      this.log.info('Attempting to connect to Speechmatics...');
       await this.speechmaticsService.connect();
       this.log.info('Speechmatics connected successfully');
     } catch (error) {
       this.log.error('Failed to connect to Speechmatics', {
         error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
         apiKeyPresent: !!apiKey,
       });
+      // Don't throw - just log the error
     }
   }
 
@@ -144,6 +181,7 @@ export class MessageHandler {
   private stopSpeaking(): void {
     this.speechmaticsService?.disconnect();
     this.speechmaticsService = null;
+    this.speechmaticsInitialized = false;
     this.log.info('Speechmatics disconnected');
   }
 
@@ -156,11 +194,19 @@ export class MessageHandler {
       try {
         const audioBuffer = Buffer.from(base64Audio, 'base64');
         this.speechmaticsService.sendAudio(audioBuffer);
+        this.log.debug('Audio data sent to Speechmatics', { 
+          bufferSize: audioBuffer.length 
+        });
       } catch (error) {
         this.log.error('Failed to process audio data', {
           error: error instanceof Error ? error.message : 'Unknown error',
         });
       }
+    } else {
+      this.log.warn('Cannot send audio - Speechmatics not connected', {
+        serviceExists: !!this.speechmaticsService,
+        connected: this.speechmaticsService?.connected
+      });
     }
   }
 

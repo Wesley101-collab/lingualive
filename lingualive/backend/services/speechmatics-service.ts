@@ -5,9 +5,11 @@
  */
 
 import WebSocket from 'ws';
+import https from 'https';
 import { logger } from '../utils/logger.js';
 
 const SPEECHMATICS_RT_URL = 'wss://eu.rt.speechmatics.com/v2';
+const SPEECHMATICS_TOKEN_URL = 'https://mp.speechmatics.com/v1/api_keys?type=rt';
 
 /** Callback function for transcript updates */
 interface TranscriptCallback {
@@ -36,13 +38,78 @@ export class SpeechmaticsService {
   }
 
   /**
+   * Generates a temporary JWT token for WebSocket connection
+   * @returns Temporary JWT token valid for 60 seconds
+   * @throws Error if token generation fails
+   */
+  private async generateTemporaryToken(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const postData = JSON.stringify({ ttl: 60 });
+
+      const options = {
+        hostname: 'mp.speechmatics.com',
+        port: 443,
+        path: '/v1/api_keys?type=rt',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData),
+          'Authorization': `Bearer ${this.apiKey}`,
+        },
+      };
+
+      const req = https.request(options, (res) => {
+        let data = '';
+
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          try {
+            this.log.info('Token API response', { 
+              statusCode: res.statusCode, 
+              data: data.substring(0, 200) 
+            });
+            
+            const response = JSON.parse(data);
+            if (response.key_value) {
+              this.log.info('Generated temporary token', { ttl: 60 });
+              resolve(response.key_value);
+            } else {
+              this.log.error('Unexpected token response format', { response });
+              reject(new Error('No key_value in response'));
+            }
+          } catch (error) {
+            this.log.error('Failed to parse token response', { 
+              error: error instanceof Error ? error.message : 'Unknown error',
+              data: data.substring(0, 200)
+            });
+            reject(error);
+          }
+        });
+      });
+
+      req.on('error', (error) => {
+        this.log.error('Token generation error', { error: error.message });
+        reject(error);
+      });
+
+      req.write(postData);
+      req.end();
+    });
+  }
+
+  /**
    * Establishes WebSocket connection to Speechmatics RT API
    * @throws Error if connection fails
    */
   async connect(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        const url = `${SPEECHMATICS_RT_URL}?auth_token=${this.apiKey}`;
+        // Generate temporary token
+        const token = await this.generateTemporaryToken();
+        const url = `${SPEECHMATICS_RT_URL}?jwt=${token}`;
         
         this.log.info('Connecting to Speechmatics RT API', { url: SPEECHMATICS_RT_URL });
         
@@ -52,13 +119,19 @@ export class SpeechmaticsService {
           this.connected = true;
           this.log.info('Connected to Speechmatics');
           
-          // Send StartRecognition message
+          // Send StartRecognition message with audio format
           this.sendMessage({
-            type: 'StartRecognition',
+            message: 'StartRecognition',
+            audio_format: {
+              type: 'raw',
+              encoding: 'pcm_s16le',
+              sample_rate: 16000,
+            },
             transcription_config: {
               language: 'en',
               operating_point: 'standard',
               max_delay: 5.0,
+              enable_partials: true,
             },
           });
           
@@ -107,13 +180,11 @@ export class SpeechmaticsService {
     }
 
     try {
-      // Send AddAudio message with base64 encoded audio
-      const message = {
-        type: 'AddAudio',
-        audio: audioBuffer.toString('base64'),
-      };
+      // Send AddAudio message (binary data)
+      const header = Buffer.from(JSON.stringify({ message: 'AddAudio' }) + '\n');
+      const packet = Buffer.concat([header, audioBuffer]);
       
-      this.ws.send(JSON.stringify(message));
+      this.ws.send(packet);
     } catch (error) {
       this.log.error('Failed to send audio', {
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -126,42 +197,54 @@ export class SpeechmaticsService {
    * @param message - Parsed message from Speechmatics
    */
   private handleMessage(message: any): void {
-    switch (message.type) {
+    this.log.debug('Speechmatics message', { message: message.message || message.type });
+    
+    switch (message.message) {
       case 'RecognitionStarted':
-        this.log.info('Recognition started');
+        this.log.info('Recognition started', { id: message.id });
         break;
 
-      case 'AddAudioStatus':
-        if (message.error) {
-          this.log.error('Audio error', { error: message.error });
-        }
+      case 'AudioAdded':
+        // Audio successfully added
         break;
 
-      case 'RecognitionResult':
-        this.handleRecognitionResult(message);
+      case 'AddPartialTranscript':
+        this.handleTranscript(message, false);
         break;
 
-      case 'EndOfStream':
-        this.log.info('End of stream reached');
+      case 'AddTranscript':
+        this.handleTranscript(message, true);
+        break;
+
+      case 'EndOfTranscript':
+        this.log.info('End of transcript reached');
         break;
 
       case 'Error':
         this.log.error('Speechmatics error', {
-          error: message.error,
+          type: message.type,
+          reason: message.reason,
+        });
+        break;
+
+      case 'Warning':
+        this.log.warn('Speechmatics warning', {
+          type: message.type,
           reason: message.reason,
         });
         break;
 
       default:
-        this.log.debug('Unknown message type', { type: message.type });
+        this.log.debug('Unknown message', { message: message.message });
     }
   }
 
   /**
-   * Processes recognition results from Speechmatics
-   * @param message - RecognitionResult message
+   * Processes transcript messages from Speechmatics
+   * @param message - Transcript message
+   * @param isFinal - Whether this is a final or partial transcript
    */
-  private handleRecognitionResult(message: any): void {
+  private handleTranscript(message: any, isFinal: boolean): void {
     try {
       const results = message.results || [];
       
@@ -173,7 +256,6 @@ export class SpeechmaticsService {
       // Extract transcript from alternatives
       if (lastResult.alternatives && lastResult.alternatives.length > 0) {
         const transcript = lastResult.alternatives[0].transcript;
-        const isFinal = !message.is_final ? false : true;
 
         this.log.debug('Transcript received', {
           text: transcript.substring(0, 50),
@@ -184,7 +266,7 @@ export class SpeechmaticsService {
         this.onTranscript(transcript, isFinal);
       }
     } catch (error) {
-      this.log.error('Failed to process recognition result', {
+      this.log.error('Failed to process transcript', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
@@ -215,8 +297,8 @@ export class SpeechmaticsService {
   disconnect(): void {
     if (this.ws) {
       try {
-        // Send EndAudio message to signal end of stream
-        this.sendMessage({ type: 'EndAudio' });
+        // Send EndOfStream message
+        this.sendMessage({ message: 'EndOfStream', last_seq_no: 0 });
         
         // Close WebSocket after a short delay
         setTimeout(() => {

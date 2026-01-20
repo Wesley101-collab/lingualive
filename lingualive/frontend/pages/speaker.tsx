@@ -123,18 +123,28 @@ export default function SpeakerPage() {
 
   const { status, send } = useWebSocket({ role: 'speaker', onMessage: handleMessage });
   const handleAudioData = useCallback((base64Data: string) => {
-    send({ type: WS_EVENTS.AUDIO_DATA, data: base64Data });
+    send({ type: WS_EVENTS.AUDIO_DATA, timestamp: Date.now(), data: base64Data });
   }, [send]);
   const { isStreaming, error, startStream, stopStream } = useAudioStream({ onAudioData: handleAudioData });
 
   const handleToggleSpeaking = async () => {
     if (isSpeaking) {
+      console.log('[Speaker] Stopping...');
+      send({ type: WS_EVENTS.SPEAKER_STOP, timestamp: Date.now() });
       stopStream();
-      send({ type: WS_EVENTS.SPEAKER_STOP });
       setIsSpeaking(false);
     } else {
+      console.log('[Speaker] Starting... Status:', status);
+      
+      // Send SPEAKER_START first, before audio starts
+      console.log('[Speaker] >>> Sending SPEAKER_START message <<<');
+      send({ type: WS_EVENTS.SPEAKER_START, timestamp: Date.now() });
+      
+      // Small delay to ensure message is sent before audio flood
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.log('[Speaker] Starting audio stream');
       await startStream();
-      send({ type: WS_EVENTS.SPEAKER_START });
       setIsSpeaking(true);
       setSessionStartTime(new Date());
     }

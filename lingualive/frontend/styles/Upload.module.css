@@ -653,3 +653,120 @@
     text-align: center;
   }
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .page {
+    padding: 0.75rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .tabs {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .tab {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.875rem;
+    white-space: nowrap;
+  }
+
+  .uploadCard {
+    padding: 1.25rem;
+  }
+
+  .uploadTitle {
+    font-size: 1rem;
+  }
+
+  .uploadZone {
+    padding: 1.5rem;
+  }
+
+  .uploadIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .uploadText {
+    font-size: 0.875rem;
+  }
+
+  .uploadHint {
+    font-size: 0.75rem;
+  }
+
+  .resultCard {
+    padding: 1rem;
+  }
+
+  .resultTitle {
+    font-size: 1rem;
+  }
+
+  .transcriptBox {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .tab {
+    font-size: 0.75rem;
+    padding: 0.4375rem 0.75rem;
+  }
+
+  .uploadCard {
+    padding: 1rem;
+  }
+
+  .uploadTitle {
+    font-size: 0.9375rem;
+  }
+
+  .uploadZone {
+    padding: 1.25rem;
+  }
+
+  .uploadIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .uploadText {
+    font-size: 0.8125rem;
+  }
+
+  .uploadHint {
+    font-size: 0.6875rem;
+  }
+
+  .resultCard {
+    padding: 0.875rem;
+  }
+
+  .transcriptBox {
+    font-size: 0.8125rem;
+  }
+
+  .actionBtn {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.875rem;
+  }
+}

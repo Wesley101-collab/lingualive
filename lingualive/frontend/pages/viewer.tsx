@@ -77,7 +77,7 @@ export default function ViewerPage() {
   const { status, send } = useWebSocket({ role: 'viewer', onMessage: handleMessage });
 
   useEffect(() => {
-    if (status === 'connected') send({ type: WS_EVENTS.LANGUAGE_SELECT, language });
+    if (status === 'connected') send({ type: WS_EVENTS.LANGUAGE_SELECT, timestamp: Date.now(), language });
   }, [status, send, language]);
 
   useEffect(() => {
