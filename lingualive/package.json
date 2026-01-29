@@ -1,0 +1,37 @@
+{
+  "name": "lingualive",
+  "version": "1.2.0",
+  "description": "Real-time multilingual captions powered by AI",
+  "scripts": {
+    "setup": "node setup.js",
+    "start": "npm run start:backend & npm run start:frontend",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm run dev",
+    "dev": "npm run start",
+    "build": "cd frontend && npm run build",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test"
+  },
+  "keywords": [
+    "captions",
+    "transcription",
+    "translation",
+    "multilingual",
+    "accessibility",
+    "real-time",
+    "ai",
+    "speechmatics",
+    "groq"
+  ],
+  "author": "Wesley",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wesley101-collab/lingualive.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
